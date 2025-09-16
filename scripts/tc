@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+TARGET_DIR="."
+USE_BAT=false
+
+# parse args
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		-b|--bat)
+			USE_BAT=true
+			shift
+			;;
+		-h|--help)
+			echo "Usage: $0 [-b|--bat] [DIRECTORY]"
+			exit 0
+			;;
+		*)
+			TARGET_DIR="$1"
+			shift
+			;;
+	esac
+done
+
+# validate directory
+if [[ ! -d "$TARGET_DIR" ]]; then
+	echo "Error: '$TARGET_DIR' is not a directory."
+	exit 1
+fi
+
+print_with_cat() {
+	local file="$1"
+	echo "--- START '$file' ---"
+	cat "$file"
+	echo "--- END '$file' ---"
+	echo ""
+}
+
+print_with_bat() {
+	local file="$1"
+	bat --paging=never -- "$file"
+}
+
+print_file() {
+	local file="$1"
+	if $USE_BAT && command -v bat >/dev/null 2>&1; then
+		print_with_bat "$file"
+	else
+		print_with_cat "$file"
+	fi
+}
+
+show_structure() {
+	echo "Structure:"
+	if command -v eza >/dev/null 2>&1; then
+		eza --all --tree -- "$TARGET_DIR"
+	elif command -v tree >/dev/null2>&1; then
+		tree -a -- "$TARGET_DIR"
+	else
+		echo "(eza/tree not found; showing recursive ls)"
+		ls -laR -- "$TARGET_DIR"
+	fi
+}
+
+show_structure
+
+echo ""
+echo "File contents below:"
+echo ""
+
+find "$TARGET_DIR" -type f -print0 | while IFS= read -r -d '' file; do
+	print_file "$file"
+done
