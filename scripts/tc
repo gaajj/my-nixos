@@ -2,22 +2,18 @@
 
 TARGET_DIR="."
 USE_BAT=false
+SHOW_ALL=false
 
 # parse args
 while [[ $# -gt 0 ]]; do
 	case "$1" in
-		-b|--bat)
-			USE_BAT=true
-			shift
-			;;
+		-b|--bat) USE_BAT=true; shift ;;
+		-a|--all) SHOW_ALL=true; shift ;;
 		-h|--help)
-			echo "Usage: $0 [-b|--bat] [DIRECTORY]"
+			echo "Usage: $0 [-b|--bat] [-a|--all] [DIRECTORY]"
 			exit 0
 			;;
-		*)
-			TARGET_DIR="$1"
-			shift
-			;;
+		*) TARGET_DIR="$1"; shift ;;
 	esac
 done
 
@@ -32,7 +28,7 @@ print_with_cat() {
 	echo "--- START '$file' ---"
 	cat "$file"
 	echo "--- END '$file' ---"
-	echo ""
+	echo
 }
 
 print_with_bat() {
@@ -52,9 +48,17 @@ print_file() {
 show_structure() {
 	echo "Structure:"
 	if command -v eza >/dev/null 2>&1; then
-		eza --all --tree -- "$TARGET_DIR"
+		if $SHOW_ALL; then
+			eza --all --tree -- "$TARGET_DIR"
+		else
+			eza --tree -- "$TARGET_DIR"
+		fi
 	elif command -v tree >/dev/null2>&1; then
-		tree -a -- "$TARGET_DIR"
+		if $SHOW_ALL; then
+			tree -a -- "$TARGET_DIR"
+		else
+			tree -- "$TARGET_DIR"
+		fi
 	else
 		echo "(eza/tree not found; showing recursive ls)"
 		ls -laR -- "$TARGET_DIR"
@@ -67,6 +71,14 @@ echo ""
 echo "File contents below:"
 echo ""
 
-find "$TARGET_DIR" -type f -print0 | while IFS= read -r -d '' file; do
+#find "$TARGET_DIR" -type f -print0 | while IFS= read -r -d '' file; do
+	#print_file "$file"
+#done
+
+if $SHOW_ALL; then
+	find "$TARGET_DIR" -type f -print0
+else
+	find "$TARGET_DIR" -type f ! -path '*/.*' -print0
+fi | while IFS= read -r -d '' file; do
 	print_file "$file"
 done
