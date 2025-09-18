@@ -1,8 +1,9 @@
 { config, pkgs, self, ... }:
 {
   imports = [
-    ./modules/home/zsh.nix
-    ./modules/home/starship.nix
+    ../modules/home/zsh.nix
+    ../modules/home/starship.nix
+    ../modules/home/kitty.nix
   ];
 
   home.username = "gaaj";

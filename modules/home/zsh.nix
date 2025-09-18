@@ -4,7 +4,6 @@
     enable = true;
 
     syntaxHighlighting.enable = true;
-    autosuggestions.enable = true;
 
     shellAliases = {
       ll = "eza -l --icons";
