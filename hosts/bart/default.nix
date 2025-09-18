@@ -6,6 +6,7 @@
     ../../modules/system/networking.nix
     ../../modules/system/audio.nix
     ../../modules/system/desktop.nix
+    ../../modules/system/fonts.nix
     ../../modules/services/ssh.nix
     ../../users/gaaj.nix
   ];

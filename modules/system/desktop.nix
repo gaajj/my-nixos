@@ -14,9 +14,10 @@
   environment.systemPackages = with pkgs; [
     xorg.xauth
     xorg.xhost
+    xorg.xclock
     bspwm
     sxhkd
     dmenu
-    alacritty
+    kitty
   ];
 }
