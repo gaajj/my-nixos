@@ -6,9 +6,8 @@
     shell = "${pkgs.zsh}/bin/zsh";
     shortcut = "a";
     baseIndex = 1;
-    renumberWindows = true;
     escapeTime = 0;
-    secureSocket = 0;
+    secureSocket = false;
     mouse = true;
     keyMode = "vi";
     historyLimit = 50000;
