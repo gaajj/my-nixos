@@ -3,12 +3,14 @@
 TARGET_DIR="."
 USE_BAT=false
 SHOW_ALL=false
+COPY_TO_CLIPBOARD=false
 
 # parse args
 while [[ $# -gt 0 ]]; do
 	case "$1" in
 		-b|--bat) USE_BAT=true; shift ;;
 		-a|--all) SHOW_ALL=true; shift ;;
+		-c|--copy) COPY_TO_CLIPBOARD=true; shift ;;
 		-h|--help)
 			echo "Usage: $0 [-b|--bat] [-a|--all] [DIRECTORY]"
 			exit 0
@@ -65,20 +67,28 @@ show_structure() {
 	fi
 }
 
-show_structure
+output="$(
+	show_structure
+	echo
+	echo "File contents below:"
+	echo
 
-echo ""
-echo "File contents below:"
-echo ""
+	if $SHOW_ALL; then
+		find "$TARGET_DIR" -type f -print0
+	else
+		find "$TARGET_DIR" -type f ! -path '*/.*' -print0
+	fi | while IFS= read -r -d '' file; do
+		print_file "$file"
+	done
+)"
 
-#find "$TARGET_DIR" -type f -print0 | while IFS= read -r -d '' file; do
-	#print_file "$file"
-#done
+echo "$output"
 
-if $SHOW_ALL; then
-	find "$TARGET_DIR" -type f -print0
-else
-	find "$TARGET_DIR" -type f ! -path '*/.*' -print0
-fi | while IFS= read -r -d '' file; do
-	print_file "$file"
-done
+if $COPY_TO_CLIPBOARD; then
+	if command -v xclip >/dev/null 2>&1; then
+		echo "$output" | xclip -selection clipboard
+		echo "[Copied output to clipboard]"
+	else
+		echo "Warning: xclip now found, cannot copy to clipboard."
+	fi
+fi

@@ -4,6 +4,7 @@
     ../modules/home/zsh.nix
     ../modules/home/starship.nix
     ../modules/home/kitty.nix
+    ../modules/home/tmux.nix
   ];
 
   home.username = "gaaj";
@@ -49,7 +50,13 @@ xsession.windowManager.bspwm = {
   };
 
   home.packages = with pkgs; [ 
-    sl neovim tmux eza bat
+    sl neovim
+    tmux
+
+    bat
+    eza
+    xclip
+
     self.packages.${pkgs.system}.scripts
   ];
 
