@@ -7,6 +7,7 @@
     ../../modules/system/audio.nix
     ../../modules/system/desktop.nix
     ../../modules/system/fonts.nix
+    ../../modules/system/nvidia.nix
     ../../modules/services/ssh.nix
     ../../users/gaaj.nix
   ];
