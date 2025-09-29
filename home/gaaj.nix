@@ -2,7 +2,6 @@
 {
   imports = [
     ../modules/home/zsh.nix
-    ../modules/home/starship.nix
     ../modules/home/kitty.nix
     ../modules/home/tmux.nix
   ];

@@ -51,7 +51,13 @@
 
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit self; };
+          home-manager.extraSpecialArgs = { 
+            inherit self; 
+            theme = {
+              accent = "#69DAA2";
+              muted = "colour245";
+            };
+          };
 
           home-manager.users.gaaj = import ./home/gaaj.nix;
         }
