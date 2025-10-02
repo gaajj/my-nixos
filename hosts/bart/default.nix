@@ -2,6 +2,7 @@
 {
   imports = [
     ../bart/hardware-configuration.nix
+    ../../modules/system/disko.nix
     ../../modules/system/base.nix
     ../../modules/system/networking.nix
     ../../modules/system/audio.nix

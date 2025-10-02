@@ -13,12 +13,12 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
+  fileSystems."/" = lib.mkDefault
     { device = "/dev/disk/by-uuid/2a21ebbf-0ed6-4876-abd6-4f063fcec56c";
       fsType = "ext4";
     };
 
-  fileSystems."/boot" =
+  fileSystems."/boot" = lib.mkDefault
     { device = "/dev/disk/by-uuid/27C1-CE52";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];

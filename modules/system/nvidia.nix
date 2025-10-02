@@ -38,7 +38,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    nvidia-settings  # Control panel
     glxinfo          # from mesa-utils, useful for testing (via pkgs.mesa-demos)
     vulkan-tools
   ];

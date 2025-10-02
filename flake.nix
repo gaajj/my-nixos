@@ -7,9 +7,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko.url = "github:nix-community/disko";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, disko, ... }:
   let
     forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ];
   in {
@@ -43,6 +44,7 @@
     nixosConfigurations.bart = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        disko.nixosModules.disko
         ./hosts/bart
         home-manager.nixosModules.home-manager
         {
